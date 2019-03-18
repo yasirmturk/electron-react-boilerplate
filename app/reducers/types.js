@@ -13,3 +13,9 @@ export type GetState = () => counterStateType;
 export type Dispatch = ReduxDispatch<Action>;
 
 export type Store = ReduxStore<GetState, Action>;
+
+export type RootProps = { store: Store, history: {} };
+
+export type User = { profile: {} };
+
+export type Room = { connections: [] };

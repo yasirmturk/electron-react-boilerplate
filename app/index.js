@@ -15,6 +15,7 @@ render(
 );
 
 if (module.hot) {
+  console.log('index is rendering');
   module.hot.accept('./containers/Root', () => {
     // eslint-disable-next-line global-require
     const NextRoot = require('./containers/Root').default;

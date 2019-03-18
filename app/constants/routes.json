@@ -1,4 +1,7 @@
 {
   "HOME": "/",
+  "LOGOUT": "/logout",
+  "REGISTER": "/register",
+  "LOGIN": "/login",
   "COUNTER": "/counter"
 }

@@ -15,6 +15,7 @@
   "javascript.format.enable": false,
   "typescript.validate.enable": false,
   "typescript.format.enable": false,
+  "typescript.tsdk": "./node_modules/typescript/lib",
 
   "flow.useNPMPackagedFlow": true,
   "search.exclude": {
