@@ -1,8 +1,13 @@
-import { REGISTERED, AUTHENTICATED, CONNECTED, LOGOUT } from '../actions/user';
+import {
+  REGISTERED,
+  AUTHENTICATED,
+  CONNECTED,
+  FOLLOWERSLIST,
+  FOLLOWINGSLIST,
+  LOGOUT
+} from '../actions/user';
 import type { Action } from './types';
 
-// let user = JSON.parse(localStorage.getItem('user'));
-// const initialState = user ? { isAuth: true, user } : { isAuth: false };
 const initialState = { isAuth: false };
 
 export default function(state = initialState, action: Action) {
@@ -27,6 +32,18 @@ export default function(state = initialState, action: Action) {
         ...state,
         user: action.payload.user,
         room: action.payload.room
+      };
+    case FOLLOWERSLIST:
+      console.log('user reducer');
+      return {
+        ...state,
+        user: { ...state.user, followers: action.payload }
+      };
+    case FOLLOWINGSLIST:
+      console.log('user reducer');
+      return {
+        ...state,
+        user: { ...state.user, followings: action.payload }
       };
     case LOGOUT:
       console.log('Logged out!');

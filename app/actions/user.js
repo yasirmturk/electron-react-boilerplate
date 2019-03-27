@@ -4,6 +4,8 @@ import { enqueueSnackbar } from '.';
 export const REGISTERED = 'REGISTERED';
 export const AUTHENTICATED = 'AUTHENTICATED';
 export const CONNECTED = 'CONNECTED';
+export const FOLLOWERSLIST = 'FOLLOWERSLIST';
+export const FOLLOWINGSLIST = 'FOLLOWINGSLIST';
 export const LOGOUT = 'LOGOUT';
 
 export const register = userData => dispatch => {
@@ -63,4 +65,40 @@ export const logout = () => {
   console.log('logging out');
   userService.logout();
   return { type: LOGOUT };
+};
+
+export const followers = id => dispatch => {
+  console.log(`followers got ${id}`);
+  userService.getFollowers(id).then(
+    data => {
+      // console.log('followers callback ' + JSON.stringify(data));
+      dispatch({ type: FOLLOWERSLIST, success: true, payload: data.followers });
+    },
+    error => {
+      dispatch({ type: FOLLOWERSLIST, success: false, payload: [] });
+      dispatch(
+        enqueueSnackbar({ message: error, options: { variant: 'error' } })
+      );
+    }
+  );
+};
+
+export const followings = id => dispatch => {
+  console.log(`followings got ${id}`);
+  userService.getFollowings(id).then(
+    data => {
+      // console.log('followings callback ' + JSON.stringify(data));
+      dispatch({
+        type: FOLLOWINGSLIST,
+        success: true,
+        payload: data.followings
+      });
+    },
+    error => {
+      dispatch({ type: FOLLOWINGSLIST, success: false, payload: [] });
+      dispatch(
+        enqueueSnackbar({ message: error, options: { variant: 'error' } })
+      );
+    }
+  );
 };

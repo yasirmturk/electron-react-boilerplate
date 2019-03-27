@@ -1,4 +1,5 @@
 /* eslint-disable no-case-declarations */
+import { LOCATION_CHANGE } from 'connected-react-router';
 import { FOLLOWED, UNFOLLOWED, LEADERBOARD } from '../actions/leaderboard';
 import type { Action } from './types';
 
@@ -26,6 +27,8 @@ export default function(state = initialState, action: Action) {
           .concat(newUser)
           .concat(state.users.slice(idx + 1))
       };
+    case LOCATION_CHANGE:
+      return initialState;
     default:
       return state;
   }

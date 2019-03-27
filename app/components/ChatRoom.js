@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -67,37 +66,34 @@ class ChatRoom extends Component<P, S> {
     return (
       <Grid container justify="center" style={{ flexGrow: 1 }}>
         <Grid item xs={12} md={10}>
-          <Paper elevation={2} style={{ padding: 20 }}>
-            <br />
-            <Typography variant="h6" gutterBottom>
-              {user._id}'s Chatroom
-            </Typography>
-            <Divider />
-            <br />
-            <MessageList messages={messages} />
-            <form>
-              <Grid container style={{ marginTop: 10 }}>
-                <TextField
-                  label="Your Message"
-                  style={{ flexGrow: 1 }}
-                  onKeyDown={event => {
-                    if (event.key === 'Enter') {
-                      this.onSubmit(event);
-                    }
-                  }}
-                  inputRef={input => (this.input = input)}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ margin: 12 }}
-                  onClick={this.onSubmit}
-                >
-                  Send
-                </Button>
-              </Grid>
-            </form>
-          </Paper>
+          <Typography variant="h6" gutterBottom>
+            {user._id}'s Chatroom
+          </Typography>
+          <Divider />
+          <br />
+          <MessageList messages={messages} />
+          <form>
+            <Grid container style={{ marginTop: 10 }}>
+              <TextField
+                label="Your Message"
+                style={{ flexGrow: 1 }}
+                onKeyDown={event => {
+                  if (event.key === 'Enter') {
+                    this.onSubmit(event);
+                  }
+                }}
+                inputRef={input => (this.input = input)}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ margin: 12 }}
+                onClick={this.onSubmit}
+              >
+                Send
+              </Button>
+            </Grid>
+          </form>
         </Grid>
       </Grid>
     );

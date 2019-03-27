@@ -19,3 +19,5 @@ export type RootProps = { store: Store, history: {} };
 export type User = { profile: {} };
 
 export type Room = { connections: [] };
+
+export type StyleClass = { classes: { toolbar: string } };

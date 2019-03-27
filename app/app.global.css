@@ -21,6 +21,10 @@ body {
   /* overflow-y: hidden; */
 }
 
+div#root {
+  height: 100vh;
+}
+
 a {
   /* color: white; */
   opacity: 0.75;

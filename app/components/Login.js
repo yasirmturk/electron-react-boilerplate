@@ -14,8 +14,8 @@ import routes from '../constants/routes';
 import styles from './Auth.css';
 
 type Props = RootProps & {
-  authenticate: (string, string) => void,
-  authenticated: boolean
+  onAuthenticate: (string, string) => void
+  // authenticated: boolean
 };
 
 export default class Login extends Component<Props> {
@@ -27,15 +27,15 @@ export default class Login extends Component<Props> {
     isLoading: false
   };
 
-  componentWillReceiveProps(nextProps) {
-    const { history } = this.props;
-    if (nextProps.authenticated === true) {
-      console.log('is authenticated');
-      console.log(history.replace('/'));
-    } else {
-      console.log('need to login');
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const { history } = this.props;
+  //   if (nextProps.authenticated === true) {
+  //     console.log('is authenticated');
+  //     console.log(history.replace('/'));
+  //   } else {
+  //     console.log('need to login');
+  //   }
+  // }
 
   isValid() {
     const isValid = true;
@@ -47,11 +47,11 @@ export default class Login extends Component<Props> {
 
   onSubmit = e => {
     e.preventDefault();
-    const { authenticate } = this.props;
+    const { onAuthenticate } = this.props;
     const { username, password } = this.state;
     if (this.isValid()) {
       this.setState({ isLoading: true });
-      authenticate(username, password);
+      onAuthenticate(username, password);
     }
   };
 
@@ -62,72 +62,58 @@ export default class Login extends Component<Props> {
   render() {
     const { username, password, isLoading } = this.state;
     return (
-      <main className={styles.main}>
-        <Paper className={styles.paper}>
-          <Typography
-            component={Link}
-            variant="h4"
-            to={routes.HOME}
-            gutterBottom
+      <div className={styles.smallContainer}>
+        <Typography variant="h6" gutterBottom>
+          Sign in {isLoading ? '...loading' : ''}
+        </Typography>
+        <form className={styles.form} onSubmit={this.onSubmit}>
+          <FormControl margin="dense" required fullWidth>
+            <InputLabel htmlFor="email">Email Address</InputLabel>
+            <Input
+              id="email"
+              name="username"
+              autoComplete="email"
+              value={username}
+              onChange={this.onChange}
+              autoFocus
+            />
+          </FormControl>
+          <FormControl margin="dense" required fullWidth>
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <Input
+              name="password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={this.onChange}
+            />
+          </FormControl>
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <br />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={`${styles.submit} ${styles.halfWidth}`}
           >
-            Insight (v1.0 alpha)
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom>
-            A chatroom where you only see chats from the people you follow
-          </Typography>
-          {/* <Avatar className={styles.avatar} /> */}
-          <Typography variant="h6" gutterBottom>
-            Sign in {isLoading ? '...loading' : ''}
-          </Typography>
-          <div className={styles.smallContainer}>
-            <form className={styles.form} onSubmit={this.onSubmit}>
-              <FormControl margin="dense" required fullWidth>
-                <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input
-                  id="email"
-                  name="username"
-                  autoComplete="email"
-                  value={username}
-                  onChange={this.onChange}
-                  autoFocus
-                />
-              </FormControl>
-              <FormControl margin="dense" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input
-                  name="password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={this.onChange}
-                />
-              </FormControl>
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={`${styles.submit} ${styles.halfWidth}`}
-              >
-                Sign in
-              </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                className={`${styles.submit} ${styles.halfWidth}`}
-                component={Link}
-                to="/register"
-              >
-                Sign Up
-              </Button>
-            </form>
-          </div>
-        </Paper>
-      </main>
+            Sign in
+          </Button>
+          {/* <Button
+            variant="contained"
+            color="secondary"
+            className={`${styles.submit} ${styles.halfWidth}`}
+            component={Link}
+            to="/register"
+            replace
+          >
+            Sign Up
+          </Button> */}
+        </form>
+      </div>
     );
   }
 }

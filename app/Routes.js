@@ -7,7 +7,6 @@ import App from './containers/App';
 import RegisterPage from './containers/RegisterPage';
 import LoginPage from './containers/LoginPage';
 import HomePage from './containers/HomePage';
-import CounterPage from './containers/CounterPage';
 
 export default () => (
   <App>
@@ -27,10 +26,17 @@ export default () => (
               <Redirect to="/main"/>
             )
           )}/> */}
-      <Route path={routes.REGISTER} component={RegisterPage} />
-      <Route path={routes.LOGIN} component={LoginPage} />
+      <Route
+        path={routes.REGISTER}
+        // component={RegisterPage}
+        render={props => <LoginPage {...props} page="register" />}
+      />
+      <Route
+        path={routes.LOGIN}
+        // component={LoginPage}
+        render={props => <LoginPage {...props} page="login" />}
+      />
       <PrivateRoute path={routes.HOME} component={HomePage} />
-      <PrivateRoute path={routes.COUNTER} component={CounterPage} />
     </Switch>
   </App>
 );

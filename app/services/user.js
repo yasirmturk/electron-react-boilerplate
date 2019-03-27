@@ -28,22 +28,6 @@ function current() {
   );
 }
 
-function logout() {
-  // remove user from local storage to log user out
-  localStorage.removeItem('user');
-}
-
-function getById(id) {
-  const requestOptions = {
-    method: 'GET',
-    headers: authHeader()
-  };
-
-  return fetch(`${config.apiUrl}/user/${id}`, requestOptions).then(
-    handleResponse
-  );
-}
-
 function register(userData) {
   console.log(JSON.stringify(userData));
   const requestOptions = {
@@ -59,6 +43,44 @@ function register(userData) {
       localStorage.setItem('user', JSON.stringify(user));
       return user;
     });
+}
+
+function logout() {
+  // remove user from local storage to log user out
+  localStorage.removeItem('user');
+}
+
+function getFollowers(id) {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  };
+
+  return fetch(`${config.apiUrl}/user/followers/${id}`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function getFollowings(id) {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  };
+
+  return fetch(`${config.apiUrl}/user/followings/${id}`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function getById(id) {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  };
+
+  return fetch(`${config.apiUrl}/user/${id}`, requestOptions).then(
+    handleResponse
+  );
 }
 
 function update(user) {
@@ -88,8 +110,10 @@ function deleteUser(id) {
 const userService = {
   login,
   current,
-  logout,
   register,
+  logout,
+  getFollowers,
+  getFollowings,
   getById,
   update,
   delete: deleteUser
