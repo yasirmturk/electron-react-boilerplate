@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -6,16 +6,21 @@ import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 
 import { withStyles } from '@material-ui/core/styles';
+import { Divider } from '@material-ui/core';
 
 // import { format } from 'date-fns';
 
 const stylesForPost = {
-  avatar: { maxWidth: 32, maxHeight: 32, marginRight: 5 },
-  userName: {
-    display: 'inline-block',
-    marginRight: 5
-  },
-  timestamp: { display: 'inline-block' }
+  avatar: { maxWidth: 40, maxHeight: 40, marginRight: 1 },
+  userName: { display: 'inline-block', marginRight: 4 },
+  views: {
+    position: 'relative',
+    fontSize: '1.25em',
+    // width: theme.typography.display1.fontSize,
+    width: '1.1em',
+    verticalAlign: 'middle'
+    // opacity: '0.5'
+  }
 };
 
 const Post = withStyles(stylesForPost)(({ post, classes }) => {
@@ -27,32 +32,37 @@ const Post = withStyles(stylesForPost)(({ post, classes }) => {
         <Avatar
           className={classes.avatar}
           alt={user.username}
-          src="https://lh3.googleusercontent.com/-8cQsNrUnVPk/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rfUGNTexwxNB5kj8vyVW1hiiH1JZg/s64-c-mo/photo.jpg"
+          src={
+            user.picture ||
+            'https://img.icons8.com/cotton/64/000000/administrator-male.png'
+          }
         />
       </Grid>
       <Grid item xs container>
         <Grid item xs={6}>
-          <Typography variant="subtitle1" className={classes.userName}>
+          <Typography
+            variant="subtitle1"
+            className={classes.userName}
+            color="textSecondary"
+          >
             {user.fullname} @{user.username}
           </Typography>
         </Grid>
         <Grid item xs />
-        <Grid item xs={4}>
-          <Icon
-            className="fas fa-eye"
-            fontSize="small"
-            color="action"
-            style={{ width: '3em' }}
-          >
+        <Grid item xs={1}>
+          <Typography variant="body2" style={{ opacity: '0.4' }}>
+            <Icon className={`${classes.views} fas fa-eye`} />
             &nbsp;99+&nbsp;
-          </Icon>
-          <Typography variant="subtitle2" className={classes.timestamp}>
+          </Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Typography variant="subtitle2" color="textSecondary">
             &nbsp;{new Date(date).toLocaleString()}
             {/* {format(timestamp, 'HH:mm')} */}
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body1" paragraph>
+          <Typography variant="body2" paragraph>
             {content}
           </Typography>
         </Grid>

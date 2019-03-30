@@ -6,6 +6,7 @@ export const AUTHENTICATED = 'AUTHENTICATED';
 export const CONNECTED = 'CONNECTED';
 export const FOLLOWERSLIST = 'FOLLOWERSLIST';
 export const FOLLOWINGSLIST = 'FOLLOWINGSLIST';
+export const DPCHANGED = 'DPCHANGED';
 export const LOGOUT = 'LOGOUT';
 
 export const register = userData => dispatch => {
@@ -102,3 +103,9 @@ export const followings = id => dispatch => {
     }
   );
 };
+
+export const dpChange = data => ({
+  type: DPCHANGED,
+  success: data.success,
+  payload: data.picture
+});

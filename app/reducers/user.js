@@ -45,6 +45,15 @@ export default function(state = initialState, action: Action) {
         ...state,
         user: { ...state.user, followings: action.payload }
       };
+    case 'DPCHANGED':
+      console.log('user reducer');
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          profile: { ...state.user.profile, picture: action.payload }
+        }
+      };
     case LOGOUT:
       console.log('Logged out!');
       return initialState;

@@ -23,7 +23,6 @@ import UserList from './UserList';
 import ChatRoom from './ChatRoom';
 
 import type { User, Room, StyleClass } from '../reducers/types';
-import routes from '../constants/routes';
 import styles from './Home.css';
 
 type Props = StyleClass & {
@@ -125,7 +124,9 @@ class Home extends Component<Props, State> {
       return {
         usersList: props.user.followers
       };
-    } else if (props.user.followings !== state.usersList) {
+    }
+
+    if (props.user.followings !== state.usersList) {
       return {
         usersList: props.user.followings
       };
@@ -178,9 +179,9 @@ class Home extends Component<Props, State> {
 
     const HomeView =
       feedCount > 0 ? (
-        <Grid item xs={12}>
-          <Feed />
-        </Grid>
+        // <Grid item xs={12}>
+        // </Grid>
+        <Feed />
       ) : (
         user && user.profile && <HomePlaceholder user={user} />
       );
@@ -208,20 +209,20 @@ class Home extends Component<Props, State> {
             ))}
           </List>
           <Divider />
-          {room && <MyRoomMenuItem room={room} onRoom={this.onRoom} />}
+          {/* {room && <MyRoomMenuItem room={room} onRoom={this.onRoom} />} */}
         </Drawer>
         <Paper square className={classes.content}>
-          <main className={classes.content}>
-            {lastTab >= 0 && (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={this.onBack}
-              >
-                Back
-              </Button>
-            )}
-            <div className={classes.toolbar} />
+          {lastTab >= 0 && (
+            <Button variant="contained" color="secondary" onClick={this.onBack}>
+              Back
+            </Button>
+          )}
+          <div className={classes.toolbar} />
+          <Divider />
+          <main
+            style={{ height: 'calc(100% - 64px)' }}
+            className={classes.content}
+          >
             {selectedTab === 0 && HomeView}
             {selectedTab === 1 && <Leaderboard onProfile={this.onProfile} />}
             {selectedTab === 2 && user && user.profile && (
@@ -249,7 +250,6 @@ class Home extends Component<Props, State> {
 const mStyles = theme => ({
   content: {
     flexGrow: 1,
-    height: '100vh',
     padding: theme.spacing.unit * 1
   },
   toolbar: theme.mixins.toolbar

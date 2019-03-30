@@ -4,12 +4,17 @@
  */
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
+@import '~@uppy/core/dist/style.css';
+@import '~@uppy/dashboard/dist/style.css';
+@import '~@uppy/webcam/dist/style.css';
+
 body {
   /* position: relative; */
 
   /* color: white; */
   height: 100vh;
-  background-color: #232c39;
+  background-color: #000;
+  background-attachment: fixed;
   background-image: linear-gradient(
     45deg,
     rgba(200, 100, 0, 0.5) 10%,

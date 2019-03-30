@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 
 import Post from './Post';
 
+import { feed } from '../actions/post';
+
 type P = {
+  onLoad: () => void,
+  getFeed: () => void,
   posts: []
 };
 
@@ -12,16 +16,30 @@ type S = {};
 class PostList extends Component<P, S> {
   state = {};
 
+  componentDidMount() {
+    const { getFeed } = this.props;
+    getFeed();
+  }
+
+  componentDidUpdate() {
+    const { onLoad } = this.props;
+    onLoad();
+
+    // setInterval(() => {
+    //   onLoad();
+    // }, 100);
+  }
+
   render() {
     const { posts } = this.props;
     // console.log(`posts: ${JSON.stringify(posts)}`);
 
     return (
-      <div>
+      <React.Fragment>
         {posts.map(post => (
           <Post key={post._id} post={post} />
         ))}
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -32,7 +50,16 @@ function mapStateToProps(state) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    getFeed() {
+      dispatch(feed());
+    }
+  };
+}
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(PostList);

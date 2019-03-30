@@ -38,7 +38,7 @@ class UserList extends Component<P> {
                   alt={user._id}
                   src={
                     user.picture ||
-                    'https://lh3.googleusercontent.com/-8cQsNrUnVPk/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rfUGNTexwxNB5kj8vyVW1hiiH1JZg/s64-c-mo/photo.jpg'
+                    'https://img.icons8.com/cotton/64/000000/administrator-male.png'
                   }
                 />
               </ListItemAvatar>

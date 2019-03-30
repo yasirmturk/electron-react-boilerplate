@@ -4,11 +4,17 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { SnackbarProvider } from 'notistack';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
+import grey from '@material-ui/core/colors/grey';
 import type { RootProps } from '../reducers/types';
 import Routes from '../Routes';
 
 const theme = createMuiTheme({
   palette: {
+    primary: blue, //#2196f3
+    secondary: { main: red[400] }, // #ef5350
+    background: { default: grey[800], paper: grey[900] },
     type: 'dark' // Switching the dark mode on is a single property value change.
   },
   typography: {

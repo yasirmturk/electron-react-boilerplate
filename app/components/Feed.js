@@ -1,58 +1,56 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Grid from '@material-ui/core/Grid';
+import Divider from '@material-ui/core/Divider';
 
 import PostList from './PostList';
 import PostInput from './PostInput';
 
+import { create } from '../actions/post';
+
 type P = {
-  getFeed: () => void,
   onPostSubmitted: ({}) => void
 };
 
-type S = {
-  feed: Array
-};
-
-class Feed extends Component<P, S> {
-  state = {
-    feed: []
-  };
-
-  componentDidMount() {
-    const { getFeed } = this.props;
-    getFeed();
-  }
+class Feed extends Component<P> {
+  state = {};
 
   onPostSubmit = content => {
     const { onPostSubmitted } = this.props;
 
     const post = {
-      content: content
+      content
     };
     onPostSubmitted(post);
   };
+
+  onLoad = () => {
+    console.log(`main: ${this.main}`);
+    this.main.scrollTop = this.main.scrollHeight;
+    // this.main.scrollIntoView(false);
+  };
+
   render() {
     return (
-      <Grid container justify="center" style={{ flexGrow: 1 }}>
-        <Grid item xs={12} md={10}>
-          <PostList />
+      <React.Fragment>
+        <div
+          style={{ height: '90%', overflow: 'scroll' }}
+          ref={main => (this.main = main)}
+        >
+          <PostList onLoad={this.onLoad} />
+        </div>
+        <Divider />
+        <div style={{ height: '10%' }}>
           <PostInput onSubmit={this.onPostSubmit} />
-        </Grid>
-      </Grid>
+        </div>
+      </React.Fragment>
     );
   }
 }
 
-import { feed, create } from '../actions/post';
-
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    getFeed() {
-      dispatch(feed());
-    },
     onPostSubmitted(post) {
       dispatch(create(post));
     }
