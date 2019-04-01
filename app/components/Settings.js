@@ -12,42 +12,40 @@ import Button from '@material-ui/core/Button';
 import { List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
 
 import { DashboardModal } from '@uppy/react';
-import PhotoUploader from '../services/upload';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import PhotoUploader from '../services/upload';
 import routes from '../constants/routes';
 import type { User } from '../reducers/types';
-import { followers, followings, dpChange } from '../actions/user';
 
 type P = {
   user: User,
   followers: string => void,
   followings: string => void,
   onUsers: string => void,
+  onConnect: () => void,
   onDPChange: ({}) => void,
+  options: ({}) => void,
   onLogOut: () => void
 };
 
 class Settings extends Component<P> {
-  state = { value: 0, modalOpen: false };
-
   constructor(props) {
     super(props);
 
     this.uppy = PhotoUploader.create();
   }
 
-  componentDidMount() {
-    const { onDPChange } = this.props;
+  state = { modalOpen: false };
 
-    // PhotoUploader.configure(this.uppy);
+  componentDidMount() {
+    const { onConnect, onDPChange } = this.props;
 
     this.uppy.on('upload-success', (file, response) => {
       console.log(`upload-success ${JSON.stringify(file)}`);
       console.log(`upload-success ${JSON.stringify(response)}`);
       onDPChange(response.body);
     });
+    onConnect();
   }
 
   componentWillUnmount() {
@@ -63,24 +61,10 @@ class Settings extends Component<P> {
     this.setState({ modalOpen: false });
   };
 
-  onPhoto = e => {
-    const { user } = this.props;
-    const files = e.target.files;
-    // this.setState({
-    //   selectedFile: file
-    // });
-    // const fileReader = new FileReader();
-    // fileReader.readAsDataURL(e.target.files[0]);
-    // fileReader.onload = e => {
-    //   console.log(`got the file`);
-    //   // this.setState((prevState) => ({
-    //   //     [name]: [...prevState[name], e.target.result]
-    //   // }));
-    // };
-  };
-
-  onChange = (event, value) => {
-    this.setState({ value });
+  onOptionsChange = (event, value) => {
+    const { options } = this.props;
+    // this.setState({ value });
+    options({ days: value });
   };
 
   onFollowers = () => {
@@ -97,57 +81,27 @@ class Settings extends Component<P> {
     followings(user._id);
   };
 
-  onSave = () => {
-    console.log(`User saved`);
-  };
-
-  onLogOut = () => {
-    const { onLogOut } = this.props;
-    onLogOut();
-  };
-
   render() {
     const {
-      user: { profile }
+      user: { profile },
+      onLogOut
     } = this.props;
-    const { value, modalOpen } = this.state;
+    const { modalOpen } = this.state;
     console.log(`profile: ${JSON.stringify(profile)}`);
 
     return (
       <Grid container>
-        {/* <Grid item xs container>
-          <Grid item xs />
-          <Grid item>
-            <Button variant="contained" color="primary" onClick={this.onSave}>
-              Save
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid item xs={12} container>
-        </Grid> */}
         <Grid item xs={2}>
-          {/* <button onClick={this.pick}>Upload</button> */}
-          <input
-            style={{ display: 'none' }}
-            accept="image/*"
-            id="contained-button-file"
-            type="file"
-            onChange={this.onPhoto}
-            ref={input => (this.fileInput = input)}
-          />
-          <label htmlFor="contained-button-file">
-            {/* <IconButton onClick={() => this.fileInput.click()}> */}
-            <IconButton onClick={this.handleOpen}>
-              <Avatar
-                style={{ width: '64px', height: '64px' }}
-                alt="d"
-                src={
-                  profile.picture ||
-                  'https://img.icons8.com/cotton/64/000000/administrator-male.png'
-                }
-              />
-            </IconButton>
-          </label>
+          <IconButton onClick={this.handleOpen}>
+            <Avatar
+              style={{ width: '64px', height: '64px' }}
+              alt="d"
+              src={
+                profile.picture ||
+                'https://img.icons8.com/cotton/64/000000/administrator-male.png'
+              }
+            />
+          </IconButton>
           <DashboardModal
             uppy={this.uppy}
             open={modalOpen}
@@ -182,15 +136,16 @@ class Settings extends Component<P> {
             </Typography>
 
             <Tabs
-              value={value}
-              onChange={this.onChange}
-              // indicatorColor="primary"
-              textColor="secondary"
+              value={profile.options.post.daysToKeep || 1}
+              onChange={this.onOptionsChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
             >
-              <Tab label="1 Day" />
-              <Tab label="3 Days" />
-              <Tab label="7 Days" />
-              <Tab label="30 Days" />
+              <Tab label="1 Day" value={1} />
+              <Tab label="3 Days" value={3} />
+              <Tab label="7 Days" value={7} />
+              <Tab label="30 Days" value={30} />
             </Tabs>
           </Grid>
           <Grid item xs={12}>
@@ -238,10 +193,10 @@ class Settings extends Component<P> {
           <Grid item xs={12}>
             <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               component={Link}
               to={routes.LOGIN}
-              onClick={this.onLogOut}
+              onClick={onLogOut}
             >
               Log Out
             </Button>
@@ -257,12 +212,20 @@ class Settings extends Component<P> {
   }
 }
 
+// eslint-disable-next-line import/first, import/order
+import { connect } from 'react-redux';
+// eslint-disable-next-line import/first, import/order
+import { bindActionCreators } from 'redux';
+// eslint-disable-next-line import/first
+import { followers, followings, dpChange, options } from '../actions/user';
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       followers,
       followings,
-      onDPChange: data => dispatch(dpChange(data))
+      onDPChange: data => dispatch(dpChange(data)),
+      options
     },
     dispatch
   );

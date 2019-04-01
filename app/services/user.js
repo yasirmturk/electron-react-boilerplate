@@ -72,6 +72,19 @@ function getFollowings(id) {
   );
 }
 
+function setPostOptions(opt) {
+  console.log(JSON.stringify(opt));
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeader() },
+    body: JSON.stringify(opt)
+  };
+
+  return fetch(`${config.apiUrl}/user/options/post`, requestOptions).then(
+    handleResponse
+  );
+}
+
 function getById(id) {
   const requestOptions = {
     method: 'GET',
@@ -114,6 +127,7 @@ const userService = {
   logout,
   getFollowers,
   getFollowings,
+  setPostOptions,
   getById,
   update,
   delete: deleteUser

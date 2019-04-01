@@ -25,16 +25,13 @@ class Leaderboard extends Component<P> {
   }
 
   render() {
-    const { topUsers, follow, unfollow, onProfile } = this.props;
+    const { topUsers, onProfile } = this.props;
     console.log(`topUsers: ${topUsers.length}`);
     return (
       <Grid container>
-        <Grid item xs={12} container>
-          <Grid item xs={6}>
-            <Typography variant="h6">Most followed Leaderboard</Typography>
-          </Grid>
-          <Grid item xs />
-          <Grid item xs={4}>
+        <Grid item container justify="space-between" alignItems="baseline">
+          <Typography variant="h5">Most followed Leaderboard</Typography>
+          <Grid item>
             <InputBase placeholder="Search for someone..." />
             <IconButton aria-label="Search">
               <i className="fas fa-search" />

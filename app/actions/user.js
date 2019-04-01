@@ -7,6 +7,7 @@ export const CONNECTED = 'CONNECTED';
 export const FOLLOWERSLIST = 'FOLLOWERSLIST';
 export const FOLLOWINGSLIST = 'FOLLOWINGSLIST';
 export const DPCHANGED = 'DPCHANGED';
+export const OPTIONSCHANGED = 'OPTIONSCHANGED';
 export const LOGOUT = 'LOGOUT';
 
 export const register = userData => dispatch => {
@@ -97,6 +98,25 @@ export const followings = id => dispatch => {
     },
     error => {
       dispatch({ type: FOLLOWINGSLIST, success: false, payload: [] });
+      dispatch(
+        enqueueSnackbar({ message: error, options: { variant: 'error' } })
+      );
+    }
+  );
+};
+
+export const options = postOptions => dispatch => {
+  console.log(`options got ${postOptions}`);
+  userService.setPostOptions(postOptions).then(
+    data => {
+      console.log('options callback ' + JSON.stringify(data));
+      dispatch({
+        type: OPTIONSCHANGED,
+        success: true,
+        payload: data.options
+      });
+    },
+    error => {
       dispatch(
         enqueueSnackbar({ message: error, options: { variant: 'error' } })
       );

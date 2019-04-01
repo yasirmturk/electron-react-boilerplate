@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Typography from '@material-ui/core/Typography';
 import Post from './Post';
 
 import { feed } from '../actions/post';
@@ -8,12 +9,11 @@ import { feed } from '../actions/post';
 type P = {
   onLoad: () => void,
   getFeed: () => void,
+  emptyMessage: string,
   posts: []
 };
 
-type S = {};
-
-class PostList extends Component<P, S> {
+class PostList extends Component<P> {
   state = {};
 
   componentDidMount() {
@@ -31,14 +31,19 @@ class PostList extends Component<P, S> {
   }
 
   render() {
-    const { posts } = this.props;
+    const { posts, emptyMessage } = this.props;
     // console.log(`posts: ${JSON.stringify(posts)}`);
 
     return (
       <React.Fragment>
-        {posts.map(post => (
-          <Post key={post._id} post={post} />
-        ))}
+        <div style={{ minHeight: 100 }} />
+        {posts.length > 0 ? (
+          posts.map(post => <Post key={post._id} post={post} />)
+        ) : (
+          <Typography variant="h6" align="center">
+            {emptyMessage}
+          </Typography>
+        )}
       </React.Fragment>
     );
   }

@@ -47,9 +47,18 @@ class UserList extends Component<P> {
                   <React.Fragment>
                     <Typography
                       variant="subtitle1"
-                      style={{ display: 'inline' }}
+                      inline
+                      style={{ marginRight: 8 }}
+                      color="primary"
                     >
-                      {user.fullname} @{user.username}&nbsp;
+                      {user.fullname}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      inline
+                      style={{ marginRight: 8 }}
+                    >
+                      @{user.username}
                     </Typography>
                     <Typography
                       variant="subtitle2"

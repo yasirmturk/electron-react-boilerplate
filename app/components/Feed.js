@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 
 import PostList from './PostList';
@@ -25,24 +26,40 @@ class Feed extends Component<P> {
   };
 
   onLoad = () => {
-    console.log(`main: ${this.main}`);
     this.main.scrollTop = this.main.scrollHeight;
-    // this.main.scrollIntoView(false);
   };
 
   render() {
     return (
       <React.Fragment>
-        <div
-          style={{ height: '90%', overflow: 'scroll' }}
-          ref={main => (this.main = main)}
+        <Grid
+          container
+          style={{ height: '100%', flexWrap: 'nowrap' }}
+          spacing={8}
+          direction="column"
+          justify="space-between"
+          alignItems="stretch"
         >
-          <PostList onLoad={this.onLoad} />
-        </div>
-        <Divider />
-        <div style={{ height: '10%' }}>
-          <PostInput onSubmit={this.onPostSubmit} />
-        </div>
+          <div
+            style={{
+              flexGrow: 1,
+              overflow: 'scroll',
+              scrollBehavior: 'smooth'
+            }}
+            ref={main => {
+              this.main = main;
+            }}
+          >
+            <PostList
+              onLoad={this.onLoad}
+              emptyMessage=" It's looking empty here! But that's normal. Find familiar faces you know by clicking on the leaderboard icon just to the left!"
+            />
+          </div>
+          <Divider />
+          <Grid item>
+            <PostInput onSubmit={this.onPostSubmit} />
+          </Grid>
+        </Grid>
       </React.Fragment>
     );
   }
@@ -54,10 +71,6 @@ function mapDispatchToProps(dispatch) {
     onPostSubmitted(post) {
       dispatch(create(post));
     }
-    // onPostReceived(post) {
-    //   console.log('message received', post);
-    //   dispatch(addPost(post));
-    // }
   };
 }
 export default connect(

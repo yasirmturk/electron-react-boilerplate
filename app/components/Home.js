@@ -1,17 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
-import Badge from '@material-ui/core/Badge';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
@@ -46,61 +42,6 @@ const menu = [
   { name: 'Leaderboard', icon: 'fa-chart-line' },
   { name: 'Settings', icon: 'fa-cog' }
 ];
-
-function HomePlaceholder(props) {
-  const {
-    user: { profile }
-  } = props;
-  return (
-    <Grid container>
-      <Grid item xs={12}>
-        <br />
-        <Typography variant="h6">
-          Welcome to {profile.username}'s Home
-        </Typography>
-        <Divider />
-      </Grid>
-      <Grid item xs={12}>
-        <br />
-        <Typography variant="subtitle1">Dear {profile.fullname},</Typography>
-        <br />
-        <Typography variant="subtitle2">
-          You have {profile.followers.length} followers now!!! and You are
-          following {profile.following.length} leaders now!!!
-        </Typography>
-        <br />
-        <Divider />
-      </Grid>
-      <Grid item xs={12}>
-        <br />
-        <Typography variant="body1" style={{ textAlign: 'center' }}>
-          It's looking empty here! But that's normal. Find familiar faces you
-          know by clicking on the leaderboard icon just to the left!
-        </Typography>
-        <br />
-        <Divider />
-      </Grid>
-      <Grid item xs={12}>
-        <Feed />
-      </Grid>
-    </Grid>
-  );
-}
-
-function MyRoomMenuItem(props) {
-  const { room, onRoom } = props;
-  return (
-    <List>
-      <ListItem button key="room" primary="{item.name}" onClick={onRoom}>
-        <Badge badgeContent={room.connections.length} color="secondary">
-          <Avatar>
-            <i className={`${styles.menuItem} fas fa-comments`} />
-          </Avatar>
-        </Badge>
-      </ListItem>
-    </List>
-  );
-}
 
 class Home extends Component<Props, State> {
   props: Props;
@@ -160,7 +101,7 @@ class Home extends Component<Props, State> {
   };
 
   onRoom = () => {
-    this.setState({ selectedTab: 11, lastTab: -1 });
+    this.setState({ selectedTab: 99, lastTab: -1 });
   };
 
   onProfile = user => {
@@ -173,18 +114,18 @@ class Home extends Component<Props, State> {
   };
 
   render() {
-    const { classes, user, room, feedCount, onLogOut } = this.props;
+    const { classes, user, room, onConnect, onLogOut } = this.props;
     const { selectedTab, lastTab, selectedUser, usersList } = this.state;
-    // console.log(`user: ${JSON.stringify(user)}`);
 
-    const HomeView =
-      feedCount > 0 ? (
-        // <Grid item xs={12}>
-        // </Grid>
-        <Feed />
-      ) : (
-        user && user.profile && <HomePlaceholder user={user} />
-      );
+    // console.log(`user: ${JSON.stringify(user)}`);
+    // const HomeView =
+    //   feedCount > 0 ? (
+    //     // <Grid item xs={12}>
+    //     // </Grid>
+    //     <Feed />
+    //   ) : (
+    //     user && user.profile && <HomePlaceholder user={user} />
+    //   );
 
     return (
       <div className={styles.container}>
@@ -201,6 +142,7 @@ class Home extends Component<Props, State> {
                 key={item.name}
                 primary={item.name}
                 onClick={() => this.onMenu(index)}
+                selected={selectedTab === index}
               >
                 <Avatar>
                   <i className={`${styles.menuItem} fas ${item.icon}`} />
@@ -217,29 +159,25 @@ class Home extends Component<Props, State> {
               Back
             </Button>
           )}
-          <div className={classes.toolbar} />
-          <Divider />
-          <main
-            style={{ height: 'calc(100% - 64px)' }}
-            className={classes.content}
-          >
-            {selectedTab === 0 && HomeView}
+          <main style={{ height: '100%' }} className={classes.content}>
+            {selectedTab === 0 && <Feed />}
             {selectedTab === 1 && <Leaderboard onProfile={this.onProfile} />}
             {selectedTab === 2 && user && user.profile && (
               <Settings
                 user={user}
+                onConnect={onConnect}
                 onLogOut={onLogOut}
                 onUsers={this.onUsers}
               />
-            )}
-            {selectedTab === 11 && user && room && (
-              <ChatRoom user={user} room={room} />
             )}
             {selectedTab === 12 && selectedUser && (
               <Profile user={selectedUser} />
             )}
             {selectedTab === 13 && usersList && (
               <UserList users={usersList} onProfile={this.onProfile} />
+            )}
+            {selectedTab === 99 && user && room && (
+              <ChatRoom user={user} room={room} />
             )}
           </main>
         </Paper>
@@ -256,3 +194,59 @@ const mStyles = theme => ({
 });
 
 export default withStyles(mStyles)(Home);
+
+// /////////////////////////////////////
+// function HomePlaceholder(props) {
+//   const {
+//     user: { profile }
+//   } = props;
+//   return (
+//     <Grid container>
+//       <Grid item xs={12}>
+//         <br />
+//         <Typography variant="h6">
+//           Welcome to {profile.username}'s Home
+//         </Typography>
+//         <Divider />
+//       </Grid>
+//       <Grid item xs={12}>
+//         <br />
+//         <Typography variant="subtitle1">Dear {profile.fullname},</Typography>
+//         <br />
+//         <Typography variant="subtitle2">
+//           You have {profile.followers.length} followers now!!! and You are
+//           following {profile.following.length} leaders now!!!
+//         </Typography>
+//         <br />
+//         <Divider />
+//       </Grid>
+//       <Grid item xs={12}>
+//         <br />
+//         <Typography variant="body1" style={{ textAlign: 'center' }}>
+//           It's looking empty here! But that's normal. Find familiar faces you
+//           know by clicking on the leaderboard icon just to the left!
+//         </Typography>
+//         <br />
+//         <Divider />
+//       </Grid>
+//       <Grid item xs={12}>
+//         <Feed />
+//       </Grid>
+//     </Grid>
+//   );
+// }
+
+// function MyRoomMenuItem(props) {
+//   const { room, onRoom } = props;
+//   return (
+//     <List>
+//       <ListItem button key="room" primary="{item.name}" onClick={onRoom}>
+//         <Badge badgeContent={room.connections.length} color="secondary">
+//           <Avatar>
+//             <i className={`${styles.menuItem} fas fa-comments`} />
+//           </Avatar>
+//         </Badge>
+//       </ListItem>
+//     </List>
+//   );
+// }

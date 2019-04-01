@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 
 import { withStyles } from '@material-ui/core/styles';
-import { Divider } from '@material-ui/core';
 
 // import { format } from 'date-fns';
 
@@ -27,7 +26,7 @@ const Post = withStyles(stylesForPost)(({ post, classes }) => {
   const { creator: user, date, content } = post;
 
   return (
-    <Grid container justify="flex-start">
+    <Grid item container>
       <Grid item xs={1}>
         <Avatar
           className={classes.avatar}
@@ -43,9 +42,16 @@ const Post = withStyles(stylesForPost)(({ post, classes }) => {
           <Typography
             variant="subtitle1"
             className={classes.userName}
+            color="primary"
+          >
+            {user.fullname}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            className={classes.userName}
             color="textSecondary"
           >
-            {user.fullname} @{user.username}
+            @{user.username}
           </Typography>
         </Grid>
         <Grid item xs />
@@ -62,7 +68,11 @@ const Post = withStyles(stylesForPost)(({ post, classes }) => {
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body2" paragraph>
+          <Typography
+            variant="body2"
+            style={{ whiteSpace: 'pre-line' }}
+            paragraph
+          >
             {content}
           </Typography>
         </Grid>

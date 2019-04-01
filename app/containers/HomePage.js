@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+// import React from 'react';
 import { connect } from 'react-redux';
 import Home from '../components/Home';
 import { current, logout, followers, followings } from '../actions/user';
