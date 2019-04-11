@@ -68,9 +68,11 @@ app.on('ready', async () => {
   }
 
   mainWindow = new BrowserWindow({
+    label: 'Insight',
     show: false,
     width: 1024,
-    height: 728
+    height: 728,
+    icon: `${__dirname}/app.icns`
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
@@ -88,6 +90,10 @@ app.on('ready', async () => {
       mainWindow.focus();
     }
   });
+
+  // mainWindow.on('page-title-updated', function(e) {
+  //   e.preventDefault();
+  // });
 
   mainWindow.on('closed', () => {
     mainWindow = null;

@@ -9,6 +9,7 @@ import { feed } from '../actions/post';
 type P = {
   onLoad: () => void,
   getFeed: () => void,
+  onProfile: ({}) => void,
   emptyMessage: string,
   posts: []
 };
@@ -24,47 +25,36 @@ class PostList extends Component<P> {
   componentDidUpdate() {
     const { onLoad } = this.props;
     onLoad();
-
-    // setInterval(() => {
-    //   onLoad();
-    // }, 100);
   }
 
   render() {
-    const { posts, emptyMessage } = this.props;
-    // console.log(`posts: ${JSON.stringify(posts)}`);
+    const { posts, onProfile, emptyMessage } = this.props;
 
-    return (
+    return posts.length > 0 ? (
+      posts.map(p => <Post key={p._id} post={p} onUser={onProfile} />)
+    ) : (
       <React.Fragment>
         <div style={{ minHeight: 100 }} />
-        {posts.length > 0 ? (
-          posts.map(post => <Post key={post._id} post={post} />)
-        ) : (
-          <Typography variant="h6" align="center">
-            {emptyMessage}
-          </Typography>
-        )}
+        <Typography variant="h6" align="center">
+          {emptyMessage}
+        </Typography>
       </React.Fragment>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    posts: state.post.feed
-  };
-}
+const mapState = state => ({
+  posts: state.post.feed
+});
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-    getFeed() {
-      dispatch(feed());
-    }
-  };
-}
+const mapDispatch = dispatch => ({
+  dispatch,
+  getFeed() {
+    dispatch(feed());
+  }
+});
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapState,
+  mapDispatch
 )(PostList);

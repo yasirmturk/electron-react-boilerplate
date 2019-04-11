@@ -28,9 +28,23 @@ class Leaderboard extends Component<P> {
     const { topUsers, onProfile } = this.props;
     console.log(`topUsers: ${topUsers.length}`);
     return (
-      <Grid container>
-        <Grid item container justify="space-between" alignItems="baseline">
-          <Typography variant="h5">Most followed Leaderboard</Typography>
+      <Grid
+        container
+        style={{ height: '100%', flexWrap: 'nowrap' }}
+        direction="column"
+        justify="space-between"
+        alignItems="stretch"
+      >
+        <Grid
+          item
+          container
+          justify="space-between"
+          alignItems="baseline"
+          style={{ padding: 16 }}
+        >
+          <Typography variant="h5" inline>
+            Most Followed Leaderboard
+          </Typography>
           <Grid item>
             <InputBase placeholder="Search for someone..." />
             <IconButton aria-label="Search">
@@ -38,7 +52,17 @@ class Leaderboard extends Component<P> {
             </IconButton>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
+        {/* <Divider /> */}
+        <Grid
+          item
+          // xs={12}
+          style={{
+            flexGrow: 1,
+            overflow: 'scroll',
+            scrollBehavior: 'smooth',
+            padding: '0 16px'
+          }}
+        >
           {topUsers && <UserList users={topUsers} onProfile={onProfile} />}
           <Divider />
         </Grid>

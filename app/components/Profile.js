@@ -5,6 +5,7 @@ import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
 
 import type { User } from '../reducers/types';
 
@@ -21,12 +22,13 @@ class Profile extends Component<P, S> {
     const { user } = this.props;
 
     return (
-      <Grid container spacing={16}>
+      <Grid container style={{ padding: 16 }}>
         <Grid item xs container>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             <Avatar
-              alt="d"
-              src="https://lh3.googleusercontent.com/-8cQsNrUnVPk/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rfUGNTexwxNB5kj8vyVW1hiiH1JZg/s64-c-mo/photo.jpg"
+              style={{ width: '64px', height: '64px' }}
+              alt={user.username}
+              src={user.picture}
             />
           </Grid>
           <Grid item xs={3}>
@@ -39,19 +41,31 @@ class Profile extends Component<P, S> {
               {user.isFollowing ? 'Following' : 'Follow'}
             </Button>
           </Grid>
-          <Divider />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="subtitle1" gutterBottom>
-            {user.followerCount} Followers
-          </Typography>
-          <Divider />
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="subtitle1" gutterBottom>
-            {user.followingCount} Following
-          </Typography>
-          <Divider />
+          <List>
+            <Divider />
+            <ListItem button>
+              <ListItemText
+                primary={`${user.followerCount ||
+                  user.followers.length} Followers`}
+              />
+              <ListItemIcon>
+                <i className="fa fas fa-chevron-right" />
+              </ListItemIcon>
+            </ListItem>
+            <Divider />
+            <ListItem button>
+              <ListItemText
+                primary={`${user.followingCount ||
+                  user.following.length} Following`}
+              />
+              <ListItemIcon>
+                <i className="fa fas fa-chevron-right" />
+              </ListItemIcon>
+            </ListItem>
+            <Divider />
+          </List>
         </Grid>
       </Grid>
     );

@@ -1,7 +1,7 @@
 {
-  "name": "insight-react-boilerplate",
+  "name": "insight",
   "productName": "Insight",
-  "version": "0.17.5",
+  "version": "0.17.9-alpha.0",
   "description": "Insight application based on React, React Router, Webpack, React Hot Loader for rapid application development",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -66,6 +66,7 @@
       "app/main.prod.js.map",
       "package.json"
     ],
+    "copyright": "Copyright © 2019 ${author}",
     "dmg": {
       "contents": [
         {
@@ -101,14 +102,14 @@
     },
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate",
+      "owner": "insight",
+      "repo": "insight",
       "private": false
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/yasirmturk/insight.server.git"
   },
   "author": {
     "name": "Yasir M Türk",
@@ -117,19 +118,14 @@
   },
   "contributors": [
     {
-      "name": "Vikram Rangaraj",
-      "email": "vikr01@icloud.com",
-      "url": "https://github.com/vikr01"
-    },
-    {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
+      "name": "Andrew Lee",
+      "email": "andrewlee500@gmail.com",
+      "url": "https://www.yasirmturk.com"
     }
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://www.yasirmturk.com"
   },
   "keywords": [
     "electron",
@@ -142,7 +138,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://www.yasirmturk.com",
   "jest": {
     "testURL": "http://localhost/",
     "moduleNameMapper": {

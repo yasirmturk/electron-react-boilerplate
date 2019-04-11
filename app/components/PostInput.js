@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
 
 type P = {
@@ -61,10 +61,11 @@ class PostInput extends Component<P> {
 
   render() {
     return (
-      <Grid container alignItems="flex-end">
-        <TextField
+      <Grid item container alignItems="flex-end">
+        <InputBase
           autoFocus
           multiline
+          // fullWidth
           // variant="outlined"
           rowsMax={8}
           // label="Broadcast a message..."

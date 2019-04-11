@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
-// import Avatar from '@material-ui/core/Avatar';
+
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -9,33 +7,22 @@ import Input from '@material-ui/core/Input';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+
 import type { RootProps } from '../reducers/types';
-import routes from '../constants/routes';
 import styles from './Auth.css';
 
 type Props = RootProps & {
   onAuthenticate: (string, string) => void
-  // authenticated: boolean
 };
 
 export default class Login extends Component<Props> {
   props: Props;
 
   state = {
-    username: 'yasir1',
-    password: '123456',
+    username: process.env.NODE_ENV === 'production' ? '' : 'yasirmturk',
+    password: process.env.NODE_ENV === 'production' ? '' : '123456',
     isLoading: false
   };
-
-  // componentWillReceiveProps(nextProps) {
-  //   const { history } = this.props;
-  //   if (nextProps.authenticated === true) {
-  //     console.log('is authenticated');
-  //     console.log(history.replace('/'));
-  //   } else {
-  //     console.log('need to login');
-  //   }
-  // }
 
   isValid() {
     const isValid = true;
@@ -68,9 +55,11 @@ export default class Login extends Component<Props> {
         </Typography>
         <form className={styles.form} onSubmit={this.onSubmit}>
           <FormControl margin="dense" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
+            <InputLabel htmlFor="username">
+              Email Address or Username
+            </InputLabel>
             <Input
-              id="email"
+              id="username"
               name="username"
               autoComplete="email"
               value={username}
@@ -102,16 +91,6 @@ export default class Login extends Component<Props> {
           >
             Sign in
           </Button>
-          {/* <Button
-            variant="contained"
-            color="secondary"
-            className={`${styles.submit} ${styles.halfWidth}`}
-            component={Link}
-            to="/register"
-            replace
-          >
-            Sign Up
-          </Button> */}
         </form>
       </div>
     );

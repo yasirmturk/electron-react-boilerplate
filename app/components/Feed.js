@@ -10,11 +10,17 @@ import PostInput from './PostInput';
 import { create } from '../actions/post';
 
 type P = {
-  onPostSubmitted: ({}) => void
+  onPostSubmitted: ({}) => void,
+  onProfile: ({}) => void
 };
 
 class Feed extends Component<P> {
   state = {};
+
+  onProfile = user => {
+    const { onProfile } = this.props;
+    onProfile(user);
+  };
 
   onPostSubmit = content => {
     const { onPostSubmitted } = this.props;
@@ -27,6 +33,7 @@ class Feed extends Component<P> {
 
   onLoad = () => {
     this.main.scrollTop = this.main.scrollHeight;
+    // this.main.scrollIntoView({ behavior: 'smooth' });
   };
 
   render() {
@@ -35,7 +42,7 @@ class Feed extends Component<P> {
         <Grid
           container
           style={{ height: '100%', flexWrap: 'nowrap' }}
-          spacing={8}
+          // spacing={8}
           direction="column"
           justify="space-between"
           alignItems="stretch"
@@ -44,7 +51,8 @@ class Feed extends Component<P> {
             style={{
               flexGrow: 1,
               overflow: 'scroll',
-              scrollBehavior: 'smooth'
+              scrollBehavior: 'smooth',
+              padding: 16
             }}
             ref={main => {
               this.main = main;
@@ -52,11 +60,12 @@ class Feed extends Component<P> {
           >
             <PostList
               onLoad={this.onLoad}
-              emptyMessage=" It's looking empty here! But that's normal. Find familiar faces you know by clicking on the leaderboard icon just to the left!"
+              onProfile={this.onProfile}
+              emptyMessage="It's looking empty here! But that's normal. Find familiar faces you know by clicking on the leaderboard icon just to the left!"
             />
           </div>
           <Divider />
-          <Grid item>
+          <Grid item style={{ padding: '8px 16px' }}>
             <PostInput onSubmit={this.onPostSubmit} />
           </Grid>
         </Grid>

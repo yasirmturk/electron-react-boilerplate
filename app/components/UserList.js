@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
+import UserInfo from './UserInfo';
 import type { User } from '../reducers/types';
 
 type P = {
@@ -29,47 +30,16 @@ class UserList extends Component<P> {
     return (
       <List>
         {users.map((user, index) => (
-          <React.Fragment key={index}>
+          <React.Fragment key={user.username}>
             <Divider />
             <ListItem button onClick={() => onProfile(user)}>
-              <Typography variant="h6">{`${++index}.`}&nbsp;&nbsp;</Typography>
+              <Typography variant="subtitle1">
+                {`${1 + index}.`}&nbsp;&nbsp;
+              </Typography>
               <ListItemAvatar>
-                <Avatar
-                  alt={user._id}
-                  src={
-                    user.picture ||
-                    'https://img.icons8.com/cotton/64/000000/administrator-male.png'
-                  }
-                />
+                <Avatar alt={user.username} src={user.picture} />
               </ListItemAvatar>
-              <ListItemText
-                primary={
-                  <React.Fragment>
-                    <Typography
-                      variant="subtitle1"
-                      inline
-                      style={{ marginRight: 8 }}
-                      color="primary"
-                    >
-                      {user.fullname}
-                    </Typography>
-                    <Typography
-                      variant="subtitle1"
-                      inline
-                      style={{ marginRight: 8 }}
-                    >
-                      @{user.username}
-                    </Typography>
-                    <Typography
-                      variant="subtitle2"
-                      style={{ display: 'inline' }}
-                    >
-                      {user.followerCount} Followers
-                    </Typography>
-                  </React.Fragment>
-                }
-                secondary={<React.Fragment />}
-              />
+              <ListItemText primary={<UserInfo user={user} showFollowers />} />
               <ListItemSecondaryAction>
                 <Button
                   variant="contained"

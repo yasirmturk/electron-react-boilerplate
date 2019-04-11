@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
+
 import type { RootProps } from '../reducers/types';
 import styles from './Auth.css';
 
 type Props = RootProps & {
   onRegister: (string, string, string) => void
-  // authenticated: boolean
 };
 
 class Register extends Component<Props> {
@@ -17,23 +17,13 @@ class Register extends Component<Props> {
 
   state = {
     user: {
-      fullname: 'Yasir 1',
-      email: 'yasirmturk+1@gmail.com',
-      password: '123456',
-      username: 'yasir1'
-    }
+      fullname: process.env.NODE_ENV === 'production' ? '' : 'Yasir 1',
+      email: process.env.NODE_ENV === 'production' ? '' : 'y1@yasirmturk.com',
+      password: process.env.NODE_ENV === 'production' ? '' : '123456',
+      username: process.env.NODE_ENV === 'production' ? '' : 'yasir1'
+    },
+    isLoading: false
   };
-
-  // componentWillUpdate() {
-  //   const { authenticated, history } = this.props;
-  //   if (authenticated === true) {
-  //     console.log('is authenticated');
-  //     console.log(history.replace('/'));
-  //   } else {
-  //     // this.setState({ isLoading: false });
-  //     console.log('need to login');
-  //   }
-  // }
 
   isValid() {
     const isValid = true;
@@ -48,7 +38,7 @@ class Register extends Component<Props> {
     if (this.isValid()) {
       const { onRegister } = this.props;
       const { user } = this.state;
-      this.setState({ errors: {}, isLoading: true });
+      this.setState({ isLoading: true });
       onRegister(user);
     }
   };
@@ -59,7 +49,7 @@ class Register extends Component<Props> {
   };
 
   render() {
-    const { user } = this.state;
+    const { user, isLoading } = this.state;
 
     return (
       <div className={styles.smallContainer}>
@@ -112,18 +102,8 @@ class Register extends Component<Props> {
             color="primary"
             className={`${styles.submit} ${styles.halfWidth}`}
           >
-            Sign Up
+            Sign Up {isLoading ? '...loading' : ''}
           </Button>
-          {/* <Button
-            variant="contained"
-            color="secondary"
-            className={`${styles.submit} ${styles.halfWidth}`}
-            component={Link}
-            to="/login"
-            replace
-          >
-            Log In
-          </Button> */}
         </form>
       </div>
     );

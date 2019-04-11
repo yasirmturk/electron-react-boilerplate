@@ -8,11 +8,17 @@ import {
   OPTIONSCHANGED,
   LOGOUT
 } from '../actions/user';
+import Session from '../services/session';
 import type { Action } from './types';
 
-const initialState = { isAuth: false };
+const emptyState = { isAuth: false };
+const getInitialStateFromSession = () => {
+  const user = Session.get();
+  // console.log(`restoring session ${JSON.stringify(user)}`);
+  return { isAuth: !!user, user };
+};
 
-export default function(state = initialState, action: Action) {
+export default function(state = getInitialStateFromSession(), action: Action) {
   console.log('user reducer');
   switch (action.type) {
     case REGISTERED:
@@ -62,7 +68,7 @@ export default function(state = initialState, action: Action) {
       };
     case LOGOUT:
       console.log('Logged out!');
-      return initialState;
+      return emptyState;
     default:
       return state;
   }

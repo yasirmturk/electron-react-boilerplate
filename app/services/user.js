@@ -1,4 +1,5 @@
 import { config, authHeader, handleResponse } from './config';
+import Session from './session';
 
 function login(username, password) {
   const requestOptions = {
@@ -12,7 +13,8 @@ function login(username, password) {
     .then(handleResponse)
     .then(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem('user', JSON.stringify(user));
+      // localStorage.setItem('user', JSON.stringify(user));
+      Session.set(user);
       return user;
     });
 }
@@ -47,7 +49,8 @@ function register(userData) {
 
 function logout() {
   // remove user from local storage to log user out
-  localStorage.removeItem('user');
+  // localStorage.removeItem('user');
+  Session.clear();
 }
 
 function getFollowers(id) {
@@ -72,15 +75,37 @@ function getFollowings(id) {
   );
 }
 
+function update(user) {
+  const requestOptions = {
+    method: 'PUT',
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(user)
+  };
+
+  return fetch(`${config.apiUrl}/user`, requestOptions).then(handleResponse);
+}
+
 function setPostOptions(opt) {
   console.log(JSON.stringify(opt));
   const requestOptions = {
-    method: 'POST',
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeader() },
     body: JSON.stringify(opt)
   };
 
   return fetch(`${config.apiUrl}/user/options/post`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function updatePassword(data) {
+  const requestOptions = {
+    method: 'PUT',
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  };
+
+  return fetch(`${config.apiUrl}/user/password`, requestOptions).then(
     handleResponse
   );
 }
@@ -92,18 +117,6 @@ function getById(id) {
   };
 
   return fetch(`${config.apiUrl}/user/${id}`, requestOptions).then(
-    handleResponse
-  );
-}
-
-function update(user) {
-  const requestOptions = {
-    method: 'PUT',
-    headers: { ...authHeader(), 'Content-Type': 'application/json' },
-    body: JSON.stringify(user)
-  };
-
-  return fetch(`${config.apiUrl}/user/${user.id}`, requestOptions).then(
     handleResponse
   );
 }
@@ -127,9 +140,10 @@ const userService = {
   logout,
   getFollowers,
   getFollowings,
-  setPostOptions,
-  getById,
   update,
+  setPostOptions,
+  updatePassword,
+  getById,
   delete: deleteUser
 };
 

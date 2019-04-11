@@ -41,3 +41,12 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
+.container {
+  height: 100vh;
+  display: flex;
+}
+
+.content {
+  flex-grow: 1;
+}

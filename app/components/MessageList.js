@@ -21,7 +21,7 @@ const Message = withStyles(stylesForMessage)(({ message, classes }) => {
   return (
     <Grid container justify="flex-start">
       <Avatar
-        className={classes.avatar}
+        // className={classes.avatar}
         alt={username}
         src="https://lh3.googleusercontent.com/-8cQsNrUnVPk/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rfUGNTexwxNB5kj8vyVW1hiiH1JZg/s64-c-mo/photo.jpg"
       />

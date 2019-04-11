@@ -1,26 +1,35 @@
 // @flow
-// import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 import Home from '../components/Home';
+
 import { current, logout, followers, followings } from '../actions/user';
 
-// type Props = {};
+type Props = {};
 
-// class HomePage extends Component<Props> {
-//   props: Props;
+class HomePage extends Component<Props> {
+  props: Props;
 
-//   render() {
-//     return <Home />;
-//   }
-// }
+  render() {
+    return (
+      <div className="container">
+        <CssBaseline />
+        <Home {...this.props} />
+      </div>
+    );
+  }
+}
 
-const mapStateToProps = state => ({
-  user: state.user.user,
-  room: state.user.room,
-  feedCount: state.post.feed.length
+const mapState = state => ({
+  user: state.user.user
+  // room: state.user.room,
+  // feedCount: state.post.feed.length
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatch = dispatch => ({
   onConnect: () => dispatch(current()),
   onLogOut: () => dispatch(logout()),
   onFollowers: id => dispatch(followers(id)),
@@ -28,6 +37,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+  mapState,
+  mapDispatch
+)(HomePage);

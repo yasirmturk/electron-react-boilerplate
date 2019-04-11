@@ -1,5 +1,5 @@
 import userService from '../services';
-import { enqueueSnackbar } from '.';
+import { snackError, snack } from '.';
 
 export const REGISTERED = 'REGISTERED';
 export const AUTHENTICATED = 'AUTHENTICATED';
@@ -12,53 +12,47 @@ export const LOGOUT = 'LOGOUT';
 
 export const register = userData => dispatch => {
   console.log(`register got ${userData}`);
-  userService.register(userData).then(
+  return userService.register(userData).then(
     user => {
       console.log(`register callback ${user}`);
       dispatch({ type: REGISTERED, success: true, payload: user });
+      return user;
       // socket.chat()
     },
     error => {
       console.log(`register callback ${error}`);
       dispatch({ type: REGISTERED, success: false, payload: {} });
-      dispatch(
-        enqueueSnackbar({ message: error, options: { variant: 'error' } })
-      );
+      dispatch(snackError(error));
     }
   );
 };
 
 export const current = () => dispatch => {
   console.log(`current got`);
-  userService.current().then(
+  return userService.current().then(
     data => {
       // console.log('current callback ' + JSON.stringify(data));
       dispatch({ type: CONNECTED, success: true, payload: data });
-      // push('/');
+      return data;
     },
     error => {
       dispatch({ type: CONNECTED, success: false, payload: {} });
-      dispatch(
-        enqueueSnackbar({ message: error, options: { variant: 'error' } })
-      );
+      dispatch(snackError(error));
     }
   );
 };
 
 export const authenticate = (username, password) => dispatch => {
   console.log(`authenticate got ${username} and ${password}`);
-  userService.login(username, password).then(
+  return userService.login(username, password).then(
     user => {
-      console.log('authenticate callback ' + user);
+      console.log(`authenticate callback ${user}`);
       dispatch({ type: AUTHENTICATED, success: true, payload: user });
-      // dispatch(connect());
-      // push('/');
+      return user;
     },
     error => {
       dispatch({ type: AUTHENTICATED, success: false, payload: {} });
-      dispatch(
-        enqueueSnackbar({ message: error, options: { variant: 'error' } })
-      );
+      dispatch(snackError(error));
     }
   );
 };
@@ -71,23 +65,22 @@ export const logout = () => {
 
 export const followers = id => dispatch => {
   console.log(`followers got ${id}`);
-  userService.getFollowers(id).then(
+  return userService.getFollowers(id).then(
     data => {
       // console.log('followers callback ' + JSON.stringify(data));
       dispatch({ type: FOLLOWERSLIST, success: true, payload: data.followers });
+      return data;
     },
     error => {
       dispatch({ type: FOLLOWERSLIST, success: false, payload: [] });
-      dispatch(
-        enqueueSnackbar({ message: error, options: { variant: 'error' } })
-      );
+      dispatch(snackError(error));
     }
   );
 };
 
 export const followings = id => dispatch => {
   console.log(`followings got ${id}`);
-  userService.getFollowings(id).then(
+  return userService.getFollowings(id).then(
     data => {
       // console.log('followings callback ' + JSON.stringify(data));
       dispatch({
@@ -95,31 +88,58 @@ export const followings = id => dispatch => {
         success: true,
         payload: data.followings
       });
+      return data;
     },
     error => {
       dispatch({ type: FOLLOWINGSLIST, success: false, payload: [] });
-      dispatch(
-        enqueueSnackbar({ message: error, options: { variant: 'error' } })
-      );
+      dispatch(snackError(error));
+    }
+  );
+};
+
+export const update = userInfo => dispatch => {
+  console.log(`update got ${userInfo}`);
+  return userService.update(userInfo).then(
+    data => {
+      console.log(`update callback ${JSON.stringify(data)}`);
+      dispatch({ type: CONNECTED, success: true, payload: data });
+      return data;
+    },
+    error => {
+      dispatch(snackError(error));
     }
   );
 };
 
 export const options = postOptions => dispatch => {
   console.log(`options got ${postOptions}`);
-  userService.setPostOptions(postOptions).then(
+  return userService.setPostOptions(postOptions).then(
     data => {
-      console.log('options callback ' + JSON.stringify(data));
+      console.log(`options callback ${JSON.stringify(data)}`);
       dispatch({
         type: OPTIONSCHANGED,
         success: true,
         payload: data.options
       });
+      return data;
     },
     error => {
-      dispatch(
-        enqueueSnackbar({ message: error, options: { variant: 'error' } })
-      );
+      dispatch(snackError(error));
+    }
+  );
+};
+
+export const updatePassword = pInfo => dispatch => {
+  console.log(`updatePassword got ${pInfo}`);
+  return userService.updatePassword(pInfo).then(
+    data => {
+      console.log(`updatePassword callback ${JSON.stringify(data)}`);
+      dispatch({ type: CONNECTED, success: true, payload: data });
+      dispatch(snack('Successfully changed the password'));
+      return data;
+    },
+    error => {
+      dispatch(snackError(error));
     }
   );
 };

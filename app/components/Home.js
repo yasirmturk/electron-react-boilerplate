@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Drawer from '@material-ui/core/Drawer';
@@ -13,18 +11,19 @@ import ListItem from '@material-ui/core/ListItem';
 
 import Feed from './Feed';
 import Settings from './Settings';
+import ChangePassword from './ChangePassword';
 import Leaderboard from './Leaderboard';
 import Profile from './Profile';
 import UserList from './UserList';
-import ChatRoom from './ChatRoom';
+// import ChatRoom from './ChatRoom';
 
 import type { User, Room, StyleClass } from '../reducers/types';
 import styles from './Home.css';
 
 type Props = StyleClass & {
   user: User,
-  room: Room,
-  feedCount: number,
+  // room: Room,
+  // feedCount: number,
   onConnect: () => void,
   onLogOut: () => void
 };
@@ -87,7 +86,11 @@ class Home extends Component<Props, State> {
 
   onBack = () => {
     const { lastTab } = this.state;
-    this.setState({ selectedTab: lastTab, lastTab: -1, usersList: [] });
+    this.setState({
+      selectedTab: lastTab > 0 ? lastTab : 0,
+      lastTab: -1,
+      usersList: []
+    });
   };
 
   onUsers = which => {
@@ -100,9 +103,9 @@ class Home extends Component<Props, State> {
     });
   };
 
-  onRoom = () => {
-    this.setState({ selectedTab: 99, lastTab: -1 });
-  };
+  // onRoom = () => {
+  //   this.setState({ selectedTab: 99, lastTab: -1 });
+  // };
 
   onProfile = user => {
     const { selectedTab } = this.state;
@@ -113,23 +116,22 @@ class Home extends Component<Props, State> {
     });
   };
 
+  onChangePassword = p => {
+    const { user } = this.props;
+    const { selectedTab } = this.state;
+    this.setState({
+      lastTab: selectedTab,
+      selectedTab: 21,
+      selectedUser: user
+    });
+  };
+
   render() {
-    const { classes, user, room, onConnect, onLogOut } = this.props;
+    const { user, onConnect, onLogOut } = this.props;
     const { selectedTab, lastTab, selectedUser, usersList } = this.state;
 
-    // console.log(`user: ${JSON.stringify(user)}`);
-    // const HomeView =
-    //   feedCount > 0 ? (
-    //     // <Grid item xs={12}>
-    //     // </Grid>
-    //     <Feed />
-    //   ) : (
-    //     user && user.profile && <HomePlaceholder user={user} />
-    //   );
-
     return (
-      <div className={styles.container}>
-        <CssBaseline />
+      <React.Fragment>
         <Drawer
           variant="permanent"
           anchor="left"
@@ -153,19 +155,26 @@ class Home extends Component<Props, State> {
           <Divider />
           {/* {room && <MyRoomMenuItem room={room} onRoom={this.onRoom} />} */}
         </Drawer>
-        <Paper square className={classes.content}>
-          {lastTab >= 0 && (
-            <Button variant="contained" color="secondary" onClick={this.onBack}>
-              Back
-            </Button>
+        <Paper square className="content">
+          {(lastTab >= 0 || selectedTab >= 10) && (
+            <div style={{ padding: 16 }}>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={this.onBack}
+              >
+                Back
+              </Button>
+            </div>
           )}
-          <main style={{ height: '100%' }} className={classes.content}>
-            {selectedTab === 0 && <Feed />}
+          <main style={{ height: '100%' }}>
+            {selectedTab === 0 && <Feed onProfile={this.onProfile} />}
             {selectedTab === 1 && <Leaderboard onProfile={this.onProfile} />}
-            {selectedTab === 2 && user && user.profile && (
+            {selectedTab === 2 && user && (
               <Settings
                 user={user}
                 onConnect={onConnect}
+                onChangePassword={this.onChangePassword}
                 onLogOut={onLogOut}
                 onUsers={this.onUsers}
               />
@@ -176,24 +185,20 @@ class Home extends Component<Props, State> {
             {selectedTab === 13 && usersList && (
               <UserList users={usersList} onProfile={this.onProfile} />
             )}
-            {selectedTab === 99 && user && room && (
-              <ChatRoom user={user} room={room} />
+            {selectedTab === 21 && selectedUser && (
+              <ChangePassword user={selectedUser} />
             )}
+            {/* {selectedTab === 99 && user && room && (
+              <ChatRoom user={user} room={room} />
+            )} */}
           </main>
         </Paper>
-      </div>
+      </React.Fragment>
     );
   }
 }
-const mStyles = theme => ({
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 1
-  },
-  toolbar: theme.mixins.toolbar
-});
 
-export default withStyles(mStyles)(Home);
+export default Home;
 
 // /////////////////////////////////////
 // function HomePlaceholder(props) {
